@@ -1,5 +1,9 @@
 # 💫 About Me:
-🔭 I’m currently working on GPM <br>🌱 I’m currently learning Three.js and PHP<br>⚡ I realy like sports and games
+
+👨‍💻 Frontend Software Developer focused on creating seamless user experiences.<br>
+⚛️ Skilled in React, Next.js, and TypeScript.<br>
+🎮 Passionate about gaming, sports, and coding for fun and impact.<br>
+🚀 Always learning and exploring new tech to enhance my skills.<br>
 
 
 ## 🌐 Socials:
