@@ -1,7 +1,7 @@
 # 💫 About Me:
 
 👨‍💻 Frontend Software Developer focused on creating seamless user experiences.<br>
-⚛️ Skilled in React, Next.js, and TypeScript.<br>
+⚛️ Skilled in React, Next.js, Vue and TypeScript.<br>
 🎮 Passionate about gaming, sports, and coding for fun and impact.<br>
 🚀 Always learning and exploring new tech to enhance my skills.<br>
 
