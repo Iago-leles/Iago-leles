@@ -76,29 +76,29 @@ TEXT = {
 
 # Personagem 24x24. Cada letra é uma cor (ver COLORS). "." é transparente.
 HERO = [
-    "........................",
-    ".......KKKKKKKKKK.......",
-    "......KHHHHHHHHHHK......",
-    ".....KHHHhhHHHHHHHK.....",
-    "....KHHHHHHHHHHHHHHK....",
-    "....KHHHHHHHHHHHHHHK....",
-    "....KHHSHHHSSHHHSSHK....",
-    "....KHSSSSSSSSSSSSHK....",
+    ".....KK.KKK..KKK.KK.....",
+    "....KHHKHhHKKHhHKHHK....",
+    "...KHhHHHHhHHhHHHHhHK...",
+    "...KHHHhHHHHHHHHhHHHK...",
+    "...KHhHHHhHHHHhHHHhHK...",
+    "...KHHhHSSHhhHSSHhHHK...",
+    "...KHHSSSSSSSSSSSSHHK...",
+    "...KHSSSSSSSSSSSSSSHK...",
     "....KSSSwESSSSwESSSK....",
     "....KSSSEESSSSEESSSK....",
-    "....KsSrrSSSSSSrrSsK....",
-    "....KsSSSSSMMSSSSSsK....",
-    ".....KssSSSSSSSSssK.....",
-    "......KKssssssssKK......",
-    ".....KWWWKssssKWWWK.....",
-    "...KKWWWWWDWWDWWWWWKK...",
-    "..KWWWWWWWDWWDWWWWWWWK..",
+    "....KSSSSSSSSSSSSSSK....",
+    "....KSSSSBBBBBBSSSSK....",
+    "....KSSSSBSSSSBSSSSK....",
+    ".....KSSSBBBBBBSSSK.....",
+    ".....KWWWKBBBBKWWWK.....",
+    "...KKWWWWWWWWWWWWWWKK...",
+    "..KWWWWWWWWWWWWWWWWWWK..",
     ".KWWWWWWWWWWWWWWWWWWWWK.",
-    ".KWwLLLLLLLLLLLLLLLLwWK.",
-    ".KWwLLLLLLLLLLLLLLLLwWK.",
-    ".KWwLLLLLLLLLLLLLLLLwWK.",
-    ".KWwllllllllllllllllwWK.",
-    ".KKKKKKKKKKKKKKKKKKKKKK.",
+    ".KWWWWWWWWWWWWWWWWWWWWK.",
+    "KKKKKKKKKKKKKKKKKKKKKKKK",
+    "KLlLlLlLlLlLlLlLlLlLlLlK",
+    "KLlLlLLLLLLLLLLLLlLlLlLK",
+    "KKKKKKKKKKKKKKKKKKKKKKKK",
     "........................",
 ]
 MUG = [
@@ -110,9 +110,9 @@ MUG = [
     "KKKKK..",
 ]
 COLORS = {
-    "K": "#1b1f24", "H": "#3b2416", "h": "#54341f", "S": "#e8b48a", "s": "#c98e63",
-    "r": "#e58f7a", "E": "#1b1f24", "w": "#ffffff", "M": "#8a3b2a",
-    "W": "#2f81f7", "D": "#f0f6fc", "L": "#d0d7de", "l": "#8b949e",
+    "K": "#0d1117", "H": "#2b1a10", "h": "#5a3a22", "B": "#3a2416", "S": "#e2a77c",
+    "E": "#0d1117", "w": "#ffffff", "M": "#8a3b2a",
+    "W": "#262a30", "L": "#d0d7de", "l": "#8b949e",
     "C": "#f0f6fc", "T": "#6f4e37",
 }
 for row in HERO + MUG:
@@ -162,6 +162,8 @@ def portrait(x, y, size, c):
 
     # Personagem com respiração em dois quadros (pixel art pede movimento em degraus)
     p.append('<g shape-rendering="crispEdges">')
+    # Blusa fixa por trás: preenche a fresta quando o corpo sobe
+    p.append(pixels(HERO[16:18], hx, hy + 16 * px, px))
     p.append('<g><animateTransform attributeName="transform" type="translate" values="0 0;0 -3" '
              'keyTimes="0;0.5" calcMode="discrete" dur="1.4s" repeatCount="indefinite"/>')
     p.append(pixels(HERO[:18], hx, hy, px))
@@ -174,16 +176,18 @@ def portrait(x, y, size, c):
     p.append(f'<g opacity="0">{lid}<animate attributeName="opacity" values="0;1;0;0;1;0;0" '
              'keyTimes="0;0.03;0.06;0.5;0.53;0.56;1" calcMode="discrete" dur="5s" repeatCount="indefinite"/></g>')
     p.append("</g>")
-    # Notebook fica parado; a logo brilha
+    # Teclado fica parado; as teclas acendem enquanto ele digita
     p.append(pixels(HERO[18:], hx, hy + 18 * px, px))
-    p.append(
-        f'<rect x="{hx + 11 * px}" y="{hy + 19 * px}" width="{2 * px}" height="{px}" fill="{c["glyph"]}">'
-        '<animate attributeName="opacity" values="0.35;1;0.35" dur="2s" repeatCount="indefinite"/></rect>'
-    )
+    for i, col in enumerate((3, 9, 15, 5, 19, 11, 7, 17)):
+        p.append(
+            f'<rect x="{hx + col * px}" y="{hy + 20 * px}" width="{px}" height="{px}" fill="{c["glyph"]}" opacity="0">'
+            f'<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.1;1" dur="1.6s" '
+            f'begin="{i * 0.2:.1f}s" repeatCount="indefinite"/></rect>'
+        )
     # Mãos digitando, alternando esquerda e direita
     for i, col in enumerate((6, 15)):
         p.append(
-            f'<g>{pixels(["KKK", "SSs"], hx + col * px, hy + 17 * px, px)}'
+            f'<g>{pixels(["KKK", "SSS"], hx + col * px, hy + 18 * px, px)}'
             f'<animateTransform attributeName="transform" type="translate" values="0 0;0 {-px}" keyTimes="0;0.5" '
             f'calcMode="discrete" dur="0.5s" begin="{i * 0.25}s" repeatCount="indefinite"/></g>'
         )
